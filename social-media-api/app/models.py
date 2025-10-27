@@ -11,4 +11,13 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+class Comment(models.Model):
+    content = models.CharField(255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    author = models.ForeignKey(User, on_delete=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+
+    def __str__(self):
+        return self.content
