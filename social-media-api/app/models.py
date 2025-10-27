@@ -31,3 +31,10 @@ class Like(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class Follow(models.Model):
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followings')
+
+    class Meta:
+        unique_together = ('follower', 'following')
