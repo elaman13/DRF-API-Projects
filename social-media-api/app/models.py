@@ -1,7 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 # Create your models here.
+
+class CustomUser(AbstractUser):
+    bio = models.CharField(max_length=150)
+    following = models.ManyToManyField('self', symmetrical=False, related_name='followers')
+
+# custom user model call
+User = settings.AUTH_USER_MODEL
+
 class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
@@ -31,10 +40,3 @@ class Like(models.Model):
 
     def __str__(self):
         return self.user.username
-    
-class Follow(models.Model):
-    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
-    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followings')
-
-    class Meta:
-        unique_together = ('follower', 'following')
