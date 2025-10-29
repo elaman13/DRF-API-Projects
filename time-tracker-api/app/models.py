@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+
+class Time(models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField(null=True, blank=True)
+    duration = models.DateTimeField(null=True, blank=True)
