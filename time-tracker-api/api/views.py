@@ -1,6 +1,6 @@
 from rest_framework import generics
 from app.models import Time
-from .serializers import TimeSerializer, TimeListSerializer
+from .serializers import TimeSerializer
 from rest_framework.response import Response
 
 
@@ -10,24 +10,9 @@ class TimeCreateView(generics.CreateAPIView):
 
 class TimeListView(generics.ListAPIView):
     queryset = Time.objects.all()
-    serializer_class = TimeListSerializer
+    serializer_class = TimeSerializer
 
-class TimeView(generics.GenericAPIView):
+class TimeView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Time.objects.all()
-    serializer_class = TimeListSerializer
+    serializer_class = TimeSerializer
 
-    def get(self, request, pk=None):
-        if pk:
-            serializer = self.get_serializer(self.get_object())
-        else:
-            serializer = self.get_serializer(self.get_queryset(), many=True)
-
-        return Response(serializer.data)
-    
-    def patch(self, request, pk):
-        time = self.get_object()
-        serializer = TimeSerializer(data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data)
